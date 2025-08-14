@@ -1,0 +1,6 @@
+streamlit>=1.41.0
+streamlit-drawable-canvas
+opencv-python-headless
+numpy
+Pillow
+scikit-learn
