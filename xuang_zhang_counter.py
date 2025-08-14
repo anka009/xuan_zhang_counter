@@ -66,9 +66,9 @@ if uploaded_file:
     # ---------------- Fleckenzählung ----------------
     st.subheader("Fleckenzählung in Maske")
     min_size = st.slider("Mindestfläche (Pixel)", 10, 20000, saved_params.get("min_size", 1000) if saved_params else 1000, 10)
-    mark_radius = st.slider("Anzeigeradius (Pixel)", 1, 50, saved_params.get("mark_radius", 8) if saved_params else 8, 1)
-    line_thickness = st.slider("Linienstärke", 1, 10, saved_params.get("line_thickness", 2) if saved_params else 2, 1)
-    cluster_dist = st.slider("Cluster-Radius (Pixel)", 1, 100, saved_params.get("cluster_dist", 20) if saved_params else 20, 1)
+    mark_radius = st.slider("Anzeigeradius (Pixel)", 1, 500, saved_params.get("mark_radius", 8) if saved_params else 8, 1)
+    line_thickness = st.slider("Linienstärke", 1, 50, saved_params.get("line_thickness", 2) if saved_params else 2, 1)
+    cluster_dist = st.slider("Cluster-Radius (Pixel)", 1, 1000, saved_params.get("cluster_dist", 20) if saved_params else 20, 1)
     mark_color = st.color_picker("Markierungsfarbe", saved_params.get("mark_color", "#ff0000") if saved_params else "#ff0000")
     bgr_color = tuple(int(mark_color.lstrip("#")[i:i+2], 16) for i in (4, 2, 0))
 
