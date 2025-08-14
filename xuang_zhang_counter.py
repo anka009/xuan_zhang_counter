@@ -43,7 +43,6 @@ def cluster_points(points, max_dist):
 st.set_page_config(page_title="Maskenbasierter Fleckenzähler mit Clustering", layout="wide")
 st.title("🎯 Maske → Fleckenzählung (mit Clustering & Einstellbarem Markieren)")
 
-# Parameter laden
 saved_params = load_params()
 
 uploaded_file = st.file_uploader("🔍 Bild hochladen", type=["jpg", "png", "tif", "tiff"])
@@ -66,9 +65,9 @@ if uploaded_file:
     # ---------------- Fleckenzählung ----------------
     st.subheader("Fleckenzählung in Maske")
     min_size = st.slider("Mindestfläche (Pixel)", 10, 20000, saved_params.get("min_size", 1000) if saved_params else 1000, 10)
-    mark_radius = st.slider("Anzeigeradius (Pixel)", 1, 500, saved_params.get("mark_radius", 8) if saved_params else 8, 1)
-    line_thickness = st.slider("Linienstärke", 1, 50, saved_params.get("line_thickness", 2) if saved_params else 2, 1)
-    cluster_dist = st.slider("Cluster-Radius (Pixel)", 1, 1000, saved_params.get("cluster_dist", 20) if saved_params else 20, 1)
+    mark_radius = st.slider("Anzeigeradius (Pixel)", 1, 50, saved_params.get("mark_radius", 8) if saved_params else 8, 1)
+    line_thickness = st.slider("Linienstärke", 1, 10, saved_params.get("line_thickness", 2) if saved_params else 2, 1)
+    cluster_dist = st.slider("Cluster-Radius (Pixel)", 1, 100, saved_params.get("cluster_dist", 20) if saved_params else 20, 1)
     mark_color = st.color_picker("Markierungsfarbe", saved_params.get("mark_color", "#ff0000") if saved_params else "#ff0000")
     bgr_color = tuple(int(mark_color.lstrip("#")[i:i+2], 16) for i in (4, 2, 0))
 
@@ -90,10 +89,15 @@ if uploaded_file:
     for (x, y) in clustered_centers:
         cv2.circle(mask_colored, (x, y), mark_radius, bgr_color, line_thickness)
 
-    # ---------------- Anzeige nebeneinander ----------------
-    col1, col2 = st.columns(2)
-    col1.image(mask, caption="Original-Maske", use_container_width=True)
-    col2.image(mask_colored, caption=f"Markierte Maske – Gefundene Strukturen: {len(clustered_centers)}", use_container_width=True)
+    # ---------------- Anzeige ----------------
+    show_original = st.checkbox("Original-Maske anzeigen", value=False)
+
+    if show_original:
+        col1, col2 = st.columns(2)
+        col1.image(mask, caption="Original-Maske", use_container_width=True)
+        col2.image(mask_colored, caption=f"Markierte Maske – Gefundene Strukturen: {len(clustered_centers)}", use_container_width=True)
+    else:
+        st.image(mask_colored, caption=f"Markierte Maske – Gefundene Strukturen: {len(clustered_centers)}", use_container_width=True)
 
     # ---------------- CSV Download ----------------
     df = pd.DataFrame(clustered_centers, columns=["X", "Y"])
