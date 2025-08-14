@@ -40,7 +40,7 @@ def cluster_points(points, max_dist):
 
 # ---------------- Streamlit ----------------
 st.set_page_config(page_title="Maskenbasierter Fleckenzähler", layout="wide")
-st.title("🎯 Maske → Fleckenzählung (flexible Ansicht)")
+st.title("🎯 Maske → Organoidenzählung ")
 
 saved_params = load_params()
 
